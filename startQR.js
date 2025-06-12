@@ -7,10 +7,8 @@ document.getElementById("startQR").addEventListener("click", function() {
                 video.srcObject = stream;
                 video.play();
 
-                // Crear canvas para procesar los frames (no lo agregues al DOM)
                 let canvas = document.createElement("canvas");
                 let context = canvas.getContext("2d");
-                // document.body.appendChild(canvas); // Elimina o comenta esta línea
 
                 function scan() {
                     if (video.readyState === video.HAVE_ENOUGH_DATA) {
