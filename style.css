@@ -17,9 +17,17 @@ body {
 }
 
 #startButton {
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
   border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  text-decoration: none;
+  width: 200px;
+  line-height: 50px;
+  position: relative;
   margin-top: 100px;
   padding: 10px 20px;
   font-size: 16px;
@@ -28,7 +36,7 @@ body {
 }
 
 #startButton:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
 video {

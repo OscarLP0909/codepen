@@ -22,7 +22,7 @@ video {
     width: 80%;
     max-width: 600px;
 }
-button {
+#startQR {
     display: block;
     margin: 20px auto;
     padding: 10px 20px;
@@ -33,6 +33,21 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-button:hover {
+#startQR:hover {
     background-color: #218838;
+}
+
+#bckButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#bckButton:hover {
+    background-color: #0056b3;
 }
