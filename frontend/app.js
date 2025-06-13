@@ -21,7 +21,7 @@ function buscarPersonaPorQR(cod_QR_ID) {
       if (data.error) {
         alert('No encontrado');
       } else {
-        alert(`Nombre: ${data.nombre_completo}\nCentro: ${data.Centro}\nSociedad: ${data.Sociedad}\nCódigo QR: ${data.cod_QR_ID}\nEstado: ${data.Estado}`);
+        alert(`Nombre: ${data.nombre_completo}\nCentro: ${data.Centro}\nSociedad: ${data.Sociedad}\nCódigo QR: ${data.cod_QR_ID}\nEstado: "Entrada"`);
       }
     })
     .catch(err => alert('Error: ' + err));
