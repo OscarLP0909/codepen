@@ -15,6 +15,10 @@ const db = mysql.createConnection({
     database: 'prueba_qr'
 });
 
+app.listen(3001, () => {
+    console.log('Servidor backend corriendo en http://localhost:3001');
+});
+
 // Endpoint de ejemplo
 app.get('/api/items', (req, res) => {
     db.query('SELECT * FROM registro_qr', (err, results) => {
@@ -23,9 +27,7 @@ app.get('/api/items', (req, res) => {
     });
 });
 
-app.listen(3001, () => {
-    console.log('Servidor backend corriendo en http://localhost:3001');
-});
+
 
 app.get('/api/persona/:cod_QR_ID', (req, res) => {
     const codigo = req.params.cod_QR_ID;
@@ -35,3 +37,4 @@ app.get('/api/persona/:cod_QR_ID', (req, res) => {
         res.json(results[0]);
     });
 });
+
