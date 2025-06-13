@@ -21,7 +21,7 @@ function buscarPersonaPorQR(cod_QR_ID) {
       if (data.error) {
         alert('No encontrado');
       } else {
-        alert(`Nombre: ${data.nombre_completo}\nCentro: ${data.Centro}\nSociedad: ${data.Sociedad}\nCódigo QR: ${data.cod_QR_ID}\nEstado: "Entrada"`);
+        alert(`Nombre: ${data.nombre_completo}\nCentro: ${data.Centro}\nSociedad: ${data.Sociedad}\nCódigo QR: ${data.cod_QR_ID}\nEstado: ${data.Estado}`);
       }
     })
     .catch(err => alert('Error: ' + err));
@@ -38,10 +38,8 @@ if (startQRBtn) {
                   video.setAttribute("playsinline", true);
                   video.srcObject = stream;
                   video.play();
-
                   let canvas = document.createElement("canvas");
                   let context = canvas.getContext("2d");
-
                   function scan() {
                       if (video.readyState === video.HAVE_ENOUGH_DATA) {
                           canvas.width = video.videoWidth;

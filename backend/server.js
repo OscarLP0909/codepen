@@ -31,6 +31,11 @@ app.get('/api/items', (req, res) => {
 
 app.get('/api/persona/:cod_QR_ID', (req, res) => {
     const codigo = req.params.cod_QR_ID;
+    db.query('UPDATE registro_qr SET Estado = "Entrada" WHERE cod_QR_ID = ?', [codigo], (err, results) => {
+        if (err) return res.status(500).json({ error: err });
+        if (results.affectedRows === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Estado actualizado a Salida' });
+    });
     db.query('SELECT * FROM registro_qr WHERE cod_QR_ID = ?', [codigo], (err, results) => {
         if (err) return res.status(500).json({ error: err });
         if (results.length === 0) return res.status(404).json({ error: 'No encontrado' });
