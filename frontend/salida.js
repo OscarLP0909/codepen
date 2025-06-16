@@ -36,10 +36,14 @@ function fichajeSalida(cod_QR_ID) {
         })
         .then(res => res.json())
         .then(result => {
+        if (result.error) {
+          alert('Error al registrar salida: ' + result.error);
+        } else {
           alert(result.message || 'Salida registrada correctamente');
+        }
         })
-        .catch(err => alert('Error al registrar salida: ' + err));
-      }
+    .catch(err => alert('Error: ' + err));
+}
     })
     .catch(err => alert('Error: ' + err));
 }
