@@ -14,15 +14,15 @@ if (consultarBtn) {
   });
 }
 
-function fichajeEntrada(cod_QR_ID) {
+function fichajeSalida(cod_QR_ID) {
   fetch(`http://localhost:3001/api/persona/${cod_QR_ID}`)
     .then(res => res.json())
     .then(data => {
       if (data.error) {
         alert('No encontrado');
       } else {
-        // Realiza el insert con Estado 'Entrada'
-        fetch('http://localhost:3001/api/entrada', {
+        // Aquí haces el POST para registrar la salida
+        fetch('http://localhost:3001/api/salida', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -36,22 +36,17 @@ function fichajeEntrada(cod_QR_ID) {
         })
         .then(res => res.json())
         .then(result => {
-          if (result.error) {
-            alert('Error al registrar entrada: ' + result.error);
-          } else {
-            alert(result.message || 'Entrada registrada correctamente');
-          }
+          alert(result.message || 'Salida registrada correctamente');
         })
-        .catch(err => alert('Error al registrar entrada: ' + err));
+        .catch(err => alert('Error al registrar salida: ' + err));
       }
     })
     .catch(err => alert('Error: ' + err));
 }
 
-const startQR = document.getElementById("startQR");
-
-if (startQR) {
-  startQR.addEventListener("click", function() {
+const salidaQRBtn = document.getElementById("salidaQR");
+if (salidaQRBtn) {
+  salidaQRBtn.addEventListener("click", function() {
       console.log("Iniciando escaneo de QR");
       const video = document.getElementById("video");
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -70,8 +65,8 @@ if (startQR) {
                           let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
                           let code = jsQR(imageData.data, canvas.width, canvas.height);
                           if (code) {
-                              // Llama a fichajeEntrada en vez de buscarPersonaPorQR
-                              fichajeEntrada(code.data);
+                              // Solo una vez la consulta al backend
+                              fichajeSalida(code.data);
                               stream.getTracks().forEach(track => track.stop());
                               return;
                           }
@@ -88,4 +83,3 @@ if (startQR) {
       }
   });
 }
-// ...existing code...

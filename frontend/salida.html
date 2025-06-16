@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salida</title>
+    <link rel="stylesheet" href="salida.css">
+</head>
+<body>
+    <div class = "titulo">
+        <h1>Fichaje Salida</h1>
+        <p>Escanea el código QR con la cámara.</p>
+    </div>
+    <video id="video" width="320" height="240" autoplay></video>
+    <button id="salidaQR">Confirmar Salida</button>
+    <button id="bckButton">Volver a Inicio</button>
+    <script>
+        document.getElementById("bckButton").addEventListener("click", function() {
+            // Volver al archivo HTML anterior
+            window.location.href = "index.html";
+        });
+    </script>
+    <script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
+    <script src ="salida.js"></script>
+</body>
+</html>

@@ -45,17 +45,24 @@ video {
   width: 80%;
   max-width: 600px;
 }
-button {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 16px;
+#salidaBtn {
   background-color: #28a745;
   color: white;
   border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  text-decoration: none;
+  width: 200px;
+  line-height: 50px;
+  position: relative;
+  margin-top: 50px;
+  padding: 10px 20px;
+  font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
 }
-button:hover {
+#salidaBtn:hover {
   background-color: #218838;
 }
