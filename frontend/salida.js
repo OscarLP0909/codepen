@@ -19,9 +19,9 @@ function fichajeSalida(cod_QR_ID) {
     .then(res => res.json())
     .then(data => {
       if (data.error) {
-        alert('No encontrado');
+        mostrarModal('No encontrado');
       } else {
-        // Aquí haces el POST para registrar la salida
+        // Realiza el insert con Estado 'Salida'
         fetch('http://localhost:3001/api/salida', {
           method: 'POST',
           headers: {
@@ -36,17 +36,18 @@ function fichajeSalida(cod_QR_ID) {
         })
         .then(res => res.json())
         .then(result => {
-        if (result.error) {
-          alert('Error al registrar salida: ' + result.error);
-        } else {
-          alert(result.message || 'Salida registrada correctamente');
-          window.location.href = 'index.html'; // Redirige a la página principal
-        }
+          if (result.error) {
+            mostrarModal('Error al registrar salida: ' + result.error);
+          } else {
+            mostrarModal(result.message, () => {
+              window.location.href = 'index.html';
+            });
+          }
         })
-    .catch(err => alert('Error: ' + err));
-}
+        .catch(err => mostrarModal('Error al registrar salida: ' + err));
+      }
     })
-    .catch(err => alert('Error: ' + err));
+    .catch(err => mostrarModal('Error: ' + err));
 }
 
 const salidaQRBtn = document.getElementById("salidaQR");
@@ -87,4 +88,28 @@ if (salidaQRBtn) {
           alert("QR code scanning is not supported in this browser.");
       }
   });
+}
+
+function mostrarModal(mensaje, callback) {
+  const modal = document.getElementById('modalMensaje');
+  const texto = document.getElementById('textoModal');
+  const cerrar = document.getElementById('cerrarModal');
+  texto.textContent = mensaje;
+  modal.style.display = 'block';
+
+  function cerrarYCallback() {
+    modal.style.display = 'none';
+    cerrar.removeEventListener('click', cerrarYCallback);
+    if (callback) callback();
+  }
+
+  cerrar.addEventListener('click', cerrarYCallback);
+
+  // Cerrar al hacer clic fuera del modal
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      cerrarYCallback();
+      window.onclick = null;
+    }
+  }
 }

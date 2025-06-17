@@ -75,7 +75,7 @@ app.post('/api/salida', (req, res) => {
                         return res.status(500).json({ error: err2.message });
                     }
                     const horaFormateada = formatearFechaFrontend(hora);
-                    res.json({ message: `Salida registrada correctamente a las ${horaFormateada}`, 
+                    res.json({ message: `Salida registrada correctamente para ${horaFormateada}`, 
                         results: results2 });
                 
                 }
@@ -112,7 +112,8 @@ app.post('/api/entrada', (req, res) => {
                     }
                     const horaFormateada = formatearFechaFrontend(hora);
                     res.json({ 
-                        message: `Entrada registrada correctamente a las ${horaFormateada}`, 
+                        message: `Entrada registrada correctamente para ${horaFormateada}`, 
+                        Hora: hora,
                         results: results2 
                     });
                 }
@@ -121,10 +122,35 @@ app.post('/api/entrada', (req, res) => {
     );
 });
 
-app.get('/api/registros/:cod_QR_ID', (req, res) => {
-    const codigo = req.params.cod_QR_ID;
-    db.query('SELECT * FROM registro_qr WHERE cod_QR_ID = ?', [codigo], (err, results) => {
-        if (err) return res.status(500).json({ error: err });
-        res.json(results);
+app.get('/api/registros/nombre/:nombre', (req, res) => {
+    const nombre = req.params.nombre;
+    db.query(
+        'SELECT * FROM registro_qr WHERE nombre_completo LIKE ?',
+        [`%${nombre}%`],
+        (err, results) => {
+            if (err) return res.status(500).json({ error: err });
+            res.json(results);
+        }
+    );
+});
+
+app.put('/api/registro/:ID/hora', (req, res) => {
+    const id = req.params.ID;
+    const { nuevaHora } = req.body; // Debe venir en formato 'YYYY-MM-DD HH:mm:ss'
+    db.query(
+        'UPDATE registro_qr SET Hora = ? WHERE ID = ?',
+        [nuevaHora, id],
+        (err, results) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ message: 'Hora actualizada correctamente', results });
+        }
+    );
+});
+
+app.delete('/api/registro/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM registro_qr WHERE ID = ?', [id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'Registro eliminado correctamente' });
     });
 });

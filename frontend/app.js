@@ -14,6 +14,12 @@ if (consultarBtn) {
   });
 }
 
+function formatearFechaFrontend(fechaMySQL) {
+    const fecha = new Date(fechaMySQL.replace(' ', 'T'));
+    const pad = n => n < 10 ? '0' + n : n;
+    return `${pad(fecha.getDate())}-${pad(fecha.getMonth() + 1)}-${fecha.getFullYear()} ${pad(fecha.getHours())}:${pad(fecha.getMinutes())}`;
+}
+
 function fichajeEntrada(cod_QR_ID) {
   fetch(`http://localhost:3001/api/persona/${cod_QR_ID}`)
     .then(res => res.json())
@@ -36,17 +42,43 @@ function fichajeEntrada(cod_QR_ID) {
         })
         .then(res => res.json())
         .then(result => {
-          if (result.error) {
-            alert('Error al registrar entrada: ' + result.error);
-          } else {
-            alert(result.message || 'Entrada registrada correctamente');
-            window.location.href = 'index.html'; // Redirige a la página principal
-          }
-        })
+        if (result.error) {
+          alert('Error al registrar entrada: ' + result.error);
+        } else {
+        
+        mostrarModal(result.message, () => {
+          window.location.href = 'index.html';
+        });}
+        }
+        )
         .catch(err => alert('Error al registrar entrada: ' + err));
       }
     })
     .catch(err => alert('Error: ' + err));
+}
+
+function mostrarModal(mensaje, callback) {
+  const modal = document.getElementById('modalMensaje');
+  const texto = document.getElementById('textoModal');
+  const cerrar = document.getElementById('cerrarModal');
+  texto.textContent = mensaje;
+  modal.style.display = 'block';
+
+  function cerrarYCallback() {
+    modal.style.display = 'none';
+    cerrar.removeEventListener('click', cerrarYCallback);
+    if (callback) callback();
+  }
+
+  cerrar.addEventListener('click', cerrarYCallback);
+
+  // Cerrar al hacer clic fuera del modal
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      cerrarYCallback();
+      window.onclick = null;
+    }
+  }
 }
 
 const startQR = document.getElementById("startQR");
@@ -89,4 +121,3 @@ if (startQR) {
       }
   });
 }
-// ...existing code...
