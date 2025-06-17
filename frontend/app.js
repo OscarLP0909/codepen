@@ -40,6 +40,7 @@ function fichajeEntrada(cod_QR_ID) {
             alert('Error al registrar entrada: ' + result.error);
           } else {
             alert(result.message || 'Entrada registrada correctamente');
+            window.location.href = 'index.html'; // Redirige a la página principal
           }
         })
         .catch(err => alert('Error al registrar entrada: ' + err));

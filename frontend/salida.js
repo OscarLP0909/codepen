@@ -40,6 +40,7 @@ function fichajeSalida(cod_QR_ID) {
           alert('Error al registrar salida: ' + result.error);
         } else {
           alert(result.message || 'Salida registrada correctamente');
+          window.location.href = 'index.html'; // Redirige a la página principal
         }
         })
     .catch(err => alert('Error: ' + err));
