@@ -103,7 +103,6 @@ if (startQR) {
                           let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
                           let code = jsQR(imageData.data, canvas.width, canvas.height);
                           if (code) {
-                              // Llama a fichajeEntrada en vez de buscarPersonaPorQR
                               fichajeEntrada(code.data);
                               stream.getTracks().forEach(track => track.stop());
                               return;
