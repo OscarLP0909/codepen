@@ -12,7 +12,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'Leoyloki22110909',
-    database: 'prueba_QR',
+    database: 'Prueba_QR_Trabajo',
 });
 
 app.listen(3001, () => {
