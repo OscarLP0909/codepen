@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Entradas y Salidas</title>
+    <link rel="stylesheet" href="datos_EyS.css">
+</head>
+<body>
+    <h1>Registros de Entradas y Salidas</h1>
+    <input type="text" id="codigoQR" placeholder="Introduce el cod_QR_ID">
+    <button id="buscarRegistros">Buscar registros</button>
+    <table border="1" id="tablaRegistros" style="margin-top:20px; display:none;">
+        <thead>
+            <tr>
+                <th>cod_QR_ID</th>
+                <th>Nombre</th>
+                <th>Hora</th>
+                <th>Estado</th>
+                <th>Centro</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div id="mensaje"></div>
+    <button id="bckButton">Volver a Inicio</button>
+    <script>
+        document.getElementById("bckButton").addEventListener("click", function() {
+            // Volver al archivo HTML anterior
+            window.location.href = "index.html";
+        });
+        </script>
+    <script src="datos_EyS.js"></script>
+</body>
+</html>

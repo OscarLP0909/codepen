@@ -19,6 +19,18 @@ app.listen(3001, () => {
     console.log('Servidor backend corriendo en http://localhost:3001');
 });
 
+function getFormattedDate() {
+    const now = new Date();
+    const pad = n => n < 10 ? '0' + n : n;
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:00`;
+}
+
+function formatearFechaFrontend(fechaMySQL) {
+    const fecha = new Date(fechaMySQL.replace(' ', 'T'));
+    const pad = n => n < 10 ? '0' + n : n;
+    return `${pad(fecha.getDate())}-${pad(fecha.getMonth() + 1)}-${fecha.getFullYear()} ${pad(fecha.getHours())}:${pad(fecha.getMinutes())}`;
+}
+
 // Endpoint de ejemplo
 app.get('/api/items', (req, res) => {
     db.query('SELECT * FROM registro_qr', (err, results) => {
@@ -40,6 +52,7 @@ app.get('/api/persona/:cod_QR_ID', (req, res) => {
 
 app.post('/api/salida', (req, res) => {
     const { cod_QR_ID, nombre_completo, Centro, Sociedad } = req.body;
+    const hora = getFormattedDate();
     db.query(
         'SELECT Estado FROM registro_qr WHERE cod_QR_ID = ? ORDER BY ID DESC LIMIT 1',
         [cod_QR_ID],
@@ -54,14 +67,16 @@ app.post('/api/salida', (req, res) => {
                 return res.status(400).json({ error: 'No puedes registrar salida porque hay una entrada previa sin salida para este QR.' });
             } else 
             db.query(
-                'INSERT INTO registro_qr (cod_QR_ID, nombre_completo, Centro, Sociedad, Estado) VALUES (?, ?, ?, ?, ?)',
-                [cod_QR_ID, nombre_completo, Centro, Sociedad, 'Salida'],
+                'INSERT INTO registro_qr (cod_QR_ID, nombre_completo, Centro, Sociedad, Estado, Hora) VALUES (?, ?, ?, ?, ?, ?)',
+                [cod_QR_ID, nombre_completo, Centro, Sociedad, 'Salida', hora],
                 (err2, results2) => {
                     if (err2) {
                         console.error('Error al insertar salida:', err2);
                         return res.status(500).json({ error: err2.message });
                     }
-                    res.json({ message: 'Salida registrada correctamente', results: results2 });
+                    const horaFormateada = formatearFechaFrontend(hora);
+                    res.json({ message: `Salida registrada correctamente a las ${horaFormateada}`, 
+                        results: results2 });
                 
                 }
             );
@@ -69,8 +84,11 @@ app.post('/api/salida', (req, res) => {
     );
 });
 
+
+
 app.post('/api/entrada', (req, res) => {
     const { cod_QR_ID, nombre_completo, Centro, Sociedad } = req.body;
+    const hora = getFormattedDate();
 
     db.query(
         'SELECT Estado FROM registro_qr WHERE cod_QR_ID = ? ORDER BY ID DESC LIMIT 1',
@@ -85,16 +103,28 @@ app.post('/api/entrada', (req, res) => {
                 return res.status(400).json({ error: 'Ya existe una entrada sin marcar salida para este QR.' });
             }
             db.query(
-                'INSERT INTO registro_qr (cod_QR_ID, nombre_completo, Centro, Sociedad, Estado) VALUES (?, ?, ?, ?, ?)',
-                [cod_QR_ID, nombre_completo, Centro, Sociedad, 'Entrada'],
+                'INSERT INTO registro_qr (cod_QR_ID, nombre_completo, Centro, Sociedad, Estado, Hora) VALUES (?, ?, ?, ?, ?, ?)',
+                [cod_QR_ID, nombre_completo, Centro, Sociedad, 'Entrada', hora],
                 (err2, results2) => {
                     if (err2) {
                         console.error('Error al insertar entrada:', err2);
                         return res.status(500).json({ error: err2.message });
                     }
-                    res.json({ message: 'Entrada registrada correctamente', results: results2 });
+                    const horaFormateada = formatearFechaFrontend(hora);
+                    res.json({ 
+                        message: `Entrada registrada correctamente a las ${horaFormateada}`, 
+                        results: results2 
+                    });
                 }
             );
         }
     );
+});
+
+app.get('/api/registros/:cod_QR_ID', (req, res) => {
+    const codigo = req.params.cod_QR_ID;
+    db.query('SELECT * FROM registro_qr WHERE cod_QR_ID = ?', [codigo], (err, results) => {
+        if (err) return res.status(500).json({ error: err });
+        res.json(results);
+    });
 });
