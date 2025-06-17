@@ -29,10 +29,10 @@ document.getElementById('buscarRegistros').addEventListener('click', () => {
                 tr.innerHTML = `
                     <td>${registro.cod_QR_ID}</td>
                     <td>${registro.nombre_completo}</td>
-                    <td>${registro.Hora ? formatearFecha (registro.Hora) : 'No registrado'}</td>
-                    <td>${registro.Estado}</td>
+                    <td>${registro.Sociedad}</td>
                     <td>${registro.Centro}</td>
-                 
+                    <td>${registro.Estado}</td>
+                    <td>${registro.Hora ? formatearFecha (registro.Hora) : 'No registrado'}</td>
                 `;
                 tbody.appendChild(tr);
             });
