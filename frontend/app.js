@@ -61,7 +61,7 @@ function mostrarModal(mensaje, callback) {
   const modal = document.getElementById('modalMensaje');
   const texto = document.getElementById('textoModal');
   const cerrar = document.getElementById('cerrarModal');
-  texto.textContent = mensaje;
+  texto.innerHTML = mensaje;
   modal.style.display = 'block';
 
   function cerrarYCallback() {
@@ -72,7 +72,6 @@ function mostrarModal(mensaje, callback) {
 
   cerrar.addEventListener('click', cerrarYCallback);
 
-  // Cerrar al hacer clic fuera del modal
   window.onclick = function(event) {
     if (event.target == modal) {
       cerrarYCallback();

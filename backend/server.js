@@ -75,7 +75,7 @@ app.post('/api/salida', (req, res) => {
                         return res.status(500).json({ error: err2.message });
                     }
                     const horaFormateada = formatearFechaFrontend(hora);
-                    res.json({ message: `Salida registrada correctamente para ${horaFormateada}`, 
+                    res.json({ message: `Salida registrada correctamente para<br> ${horaFormateada}`, 
                         results: results2 });
                 
                 }
@@ -112,7 +112,7 @@ app.post('/api/entrada', (req, res) => {
                     }
                     const horaFormateada = formatearFechaFrontend(hora);
                     res.json({ 
-                        message: `Entrada registrada correctamente para ${horaFormateada}`, 
+                        message: `Entrada registrada correctamente para<br>${horaFormateada}`, 
                         Hora: hora,
                         results: results2 
                     });
