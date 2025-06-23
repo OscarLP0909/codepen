@@ -59,37 +59,29 @@ function convertirAFormatoMySQL(fechaUsuario) {
     return `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')} ${horas.padStart(2, '0')}:${minutos.padStart(2, '0')}:00`;
 }
 
+let registroIdEditar = null;
+
 document.addEventListener('click', function(e) {
+    // Botón editar hora
     if (e.target.classList.contains('editarHoraBtn')) {
-        const id = e.target.getAttribute('data-id');
+        registroIdEditar = e.target.getAttribute('data-id');
         const horaActual = e.target.getAttribute('data-hora') || '';
-        // Formatea la hora actual para mostrarla en el prompt en formato dd-MM-yyyy, HH:mm
-        let horaActualFormateada = '';
+        const modal = document.getElementById('modalEditarHora');
+        const inputFecha = document.getElementById('inputFecha');
+        const inputHora = document.getElementById('inputHora');
+        // Rellena los campos si hay hora actual
         if (horaActual) {
             const fecha = new Date(horaActual.replace(' ', 'T'));
-            const pad = n => n < 10 ? '0' + n : n;
-            horaActualFormateada = `${pad(fecha.getDate())}-${pad(fecha.getMonth() + 1)}-${fecha.getFullYear()}, ${pad(fecha.getHours())}:${pad(fecha.getMinutes())}`;
+            inputFecha.value = fecha.toISOString().slice(0,10);
+            inputHora.value = fecha.toTimeString().slice(0,5);
+        } else {
+            inputFecha.value = '';
+            inputHora.value = '';
         }
-        const nuevaHoraUsuario = prompt('Introduce la nueva hora (dd-MM-yyyy, HH:mm):', horaActualFormateada);
-        if (nuevaHoraUsuario) {
-            const nuevaHora = convertirAFormatoMySQL(nuevaHoraUsuario);
-            if (!nuevaHora) {
-                alert('Formato incorrecto. Usa dd-MM-yyyy, HH:mm');
-                return;
-            }
-            fetch(`http://localhost:3001/api/registro/${id}/hora`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nuevaHora })
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message);
-                document.getElementById('buscarRegistros').click();
-            })
-            .catch(err => alert('Error al actualizar la hora: ' + err));
-        }
+        modal.style.display = 'block';
     }
+
+    // Botón borrar registro (sin cambios)
     if (e.target.classList.contains('borrarRegistroBtn')) {
         const id = e.target.getAttribute('data-id');
         if (confirm('¿Seguro que quieres eliminar este registro?')) {
@@ -105,3 +97,32 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+// Cerrar modal
+document.getElementById('cerrarEditarHora').onclick = function() {
+    document.getElementById('modalEditarHora').style.display = 'none';
+};
+
+// Guardar nueva hora
+document.getElementById('guardarHoraBtn').onclick = function() {
+    const fecha = document.getElementById('inputFecha').value;
+    const hora = document.getElementById('inputHora').value;
+    if (!fecha || !hora) {
+        alert('Debes seleccionar fecha y hora');
+        return;
+    }
+    // Formato MySQL: YYYY-MM-DD HH:mm:ss
+    const nuevaHora = `${fecha} ${hora}:00`;
+    fetch(`http://localhost:3001/api/registro/${registroIdEditar}/hora`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nuevaHora })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        document.getElementById('modalEditarHora').style.display = 'none';
+        document.getElementById('buscarRegistros').click();
+    })
+    .catch(err => alert('Error al actualizar la hora: ' + err));
+};

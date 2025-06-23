@@ -26,7 +26,19 @@
     </table>
     <div id="mensaje"></div>
     <button id="bckButton">Volver a Inicio</button>
-    <script>
+    <!-- Modal para editar fecha y hora -->
+    <div id="modalEditarHora" class="modal">
+  <div class="modal-content">
+    <span id="cerrarEditarHora" class="close">&times;</span>
+    <h3>Editar fecha y hora</h3>
+    <input type="date" id="inputFecha"><br><br>
+    <input type="time" id="inputHora"><br><br>
+    <div style="display: flex; justify-content: center;">
+      <button id="guardarHoraBtn" style="margin-top: 16px;">Guardar</button>
+    </div>
+  </div>
+</div>
+<script>
         document.getElementById("bckButton").addEventListener("click", function() {
             // Volver al archivo HTML anterior
             window.location.href = "index.html";
