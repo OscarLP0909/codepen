@@ -63,11 +63,19 @@ button:hover {
 }
 
 #tablaRegistros tr:nth-child(even) {
-    background: #f2f6fa;
+    background: #f79090;
 }
 
-#tablaRegistros tr:hover {
-    background: #eaf6ff;
+#tablaRegistros tr:nth-child(odd) {
+    background: #86f08b;
+}
+
+#tablaRegistros tr:nth-child(even):hover {
+    background: #e46464;
+}
+
+#tablaRegistros tr:nth-child(odd):hover {
+    background: #64e464;
 }
 
 .acciones-fila {
